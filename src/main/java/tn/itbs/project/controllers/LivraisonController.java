@@ -1,6 +1,8 @@
 package tn.itbs.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.itbs.project.dto.LivraisonDTO;
 import tn.itbs.project.service.LivraisonService;
@@ -25,17 +27,33 @@ public class LivraisonController {
     }
 
     @PostMapping
-    public LivraisonDTO create(@RequestBody LivraisonDTO dto) {
-        return livraisonService.create(dto);
+    public ResponseEntity<?> create(@RequestBody LivraisonDTO dto) {
+        try {
+            LivraisonDTO createdLivraison = livraisonService.create(dto);
+            return ResponseEntity.ok(createdLivraison);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public LivraisonDTO update(@PathVariable int id, @RequestBody LivraisonDTO dto) {
-        return livraisonService.update(id, dto);
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody LivraisonDTO dto) {
+        try {
+            LivraisonDTO updatedLivraison = livraisonService.update(id, dto);
+            return ResponseEntity.ok(updatedLivraison);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
-        livraisonService.delete(id);
+    public ResponseEntity<String> delete(@PathVariable int id) {
+        try {
+            livraisonService.delete(id);
+            return ResponseEntity.ok("Livraison supprimée avec succès");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body("Erreur lors de la suppression: " + e.getMessage());
+        }
     }
 }

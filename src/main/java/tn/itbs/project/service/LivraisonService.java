@@ -39,9 +39,11 @@ public class LivraisonService {
     }
 
     public LivraisonDTO create(LivraisonDTO dto) {
-        Commande commande = commandeRepository.findById(dto.getCommandeId()).orElse(null);
-        Transporteur transporteur = transporteurRepository.findById(dto.getTransporteurId()).orElse(null);
-        if (commande == null || transporteur == null) return null;
+        Commande commande = commandeRepository.findById(dto.getCommandeId())
+                .orElseThrow(() -> new RuntimeException("Commande non trouvée avec l'ID: " + dto.getCommandeId()));
+        
+        Transporteur transporteur = transporteurRepository.findById(dto.getTransporteurId())
+                .orElseThrow(() -> new RuntimeException("Transporteur non trouvé avec l'ID: " + dto.getTransporteurId()));
 
         Livraison livraison = new Livraison();
         livraison.setCommande(commande);
@@ -54,12 +56,14 @@ public class LivraisonService {
     }
 
     public LivraisonDTO update(int id, LivraisonDTO dto) {
-        Livraison livraison = livraisonRepository.findById(id).orElse(null);
-        if (livraison == null) return null;
+        Livraison livraison = livraisonRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Livraison non trouvée avec l'ID: " + id));
 
-        Commande commande = commandeRepository.findById(dto.getCommandeId()).orElse(null);
-        Transporteur transporteur = transporteurRepository.findById(dto.getTransporteurId()).orElse(null);
-        if (commande == null || transporteur == null) return null;
+        Commande commande = commandeRepository.findById(dto.getCommandeId())
+                .orElseThrow(() -> new RuntimeException("Commande non trouvée avec l'ID: " + dto.getCommandeId()));
+        
+        Transporteur transporteur = transporteurRepository.findById(dto.getTransporteurId())
+                .orElseThrow(() -> new RuntimeException("Transporteur non trouvé avec l'ID: " + dto.getTransporteurId()));
 
         livraison.setCommande(commande);
         livraison.setTransporteur(transporteur);
@@ -71,6 +75,9 @@ public class LivraisonService {
     }
 
     public void delete(int id) {
+        if (!livraisonRepository.existsById(id)) {
+            throw new RuntimeException("Livraison non trouvée avec l'ID: " + id);
+        }
         livraisonRepository.deleteById(id);
     }
 
