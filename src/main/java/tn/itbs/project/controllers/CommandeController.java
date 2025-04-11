@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.itbs.project.dto.CommandeDTO;
 import tn.itbs.project.service.CommandeService;
+import org.springframework.http.ResponseEntity; 
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -25,17 +28,33 @@ public class CommandeController {
     }
 
     @PostMapping
-    public CommandeDTO createCommande(@RequestBody CommandeDTO dto) {
-        return commandeService.createCommande(dto);
+    public ResponseEntity<?> createCommande(@RequestBody CommandeDTO dto) {
+        try {
+            CommandeDTO createdCommande = commandeService.createCommande(dto);
+            return ResponseEntity.ok(createdCommande);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public CommandeDTO updateCommande(@PathVariable int id, @RequestBody CommandeDTO dto) {
-        return commandeService.updateCommande(id, dto);
+    public ResponseEntity<?> updateCommande(@PathVariable int id, @RequestBody CommandeDTO dto) {
+        try {
+            CommandeDTO updatedCommande = commandeService.updateCommande(id, dto);
+            return ResponseEntity.ok(updatedCommande);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCommande(@PathVariable int id) {
-        commandeService.deleteCommande(id);
+    public ResponseEntity<String> deleteCommande(@PathVariable int id) {
+        try {
+            commandeService.deleteCommande(id);
+            return ResponseEntity.ok("Commande supprimée avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body("Erreur lors de la suppression: " + e.getMessage());
+        }
     }
 }

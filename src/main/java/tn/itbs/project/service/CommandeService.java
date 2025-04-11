@@ -34,34 +34,39 @@ public class CommandeService {
                 .orElse(null);
     }
 
-    public CommandeDTO createCommande(CommandeDTO dto) {
-        Client client = clientRepository.findById(dto.getClientId()).orElse(null);
-        if (client == null) return null;
-
-        Commande commande = new Commande();
-        commande.setClient(client);
-        commande.setDate(dto.getDate());
-        commande.setStatut(dto.getStatut());
-        commande.setMontantTotal(dto.getMontantTotal());
-
-        return convertToDTO(commandeRepository.save(commande));
+public CommandeDTO createCommande(CommandeDTO dto) {
+    Client client = clientRepository.findById(dto.getClientId()).orElse(null);
+    if (client == null) {
+        throw new RuntimeException("Client non trouvé avec l'ID: " + dto.getClientId());
     }
 
-    public CommandeDTO updateCommande(int id, CommandeDTO dto) {
-        Commande commande = commandeRepository.findById(id).orElse(null);
-        if (commande == null) return null;
+    Commande commande = new Commande();
+    commande.setClient(client);
+    commande.setDate(dto.getDate());
+    commande.setStatut(dto.getStatut());
+    commande.setMontantTotal(dto.getMontantTotal());
 
-        Client client = clientRepository.findById(dto.getClientId()).orElse(null);
-        if (client == null) return null;
+    return convertToDTO(commandeRepository.save(commande));
+}
 
-        commande.setClient(client);
-        commande.setDate(dto.getDate());
-        commande.setStatut(dto.getStatut());
-        commande.setMontantTotal(dto.getMontantTotal());
-
-        return convertToDTO(commandeRepository.save(commande));
+public CommandeDTO updateCommande(int id, CommandeDTO dto) {
+    Commande commande = commandeRepository.findById(id).orElse(null);
+    if (commande == null) {
+        throw new RuntimeException("Commande non trouvée avec l'ID: " + id);
     }
 
+    Client client = clientRepository.findById(dto.getClientId()).orElse(null);
+    if (client == null) {
+        throw new RuntimeException("Client non trouvé avec l'ID: " + dto.getClientId());
+    }
+
+    commande.setClient(client);
+    commande.setDate(dto.getDate());
+    commande.setStatut(dto.getStatut());
+    commande.setMontantTotal(dto.getMontantTotal());
+
+    return convertToDTO(commandeRepository.save(commande));
+}
     public void deleteCommande(int id) {
         commandeRepository.deleteById(id);
     }

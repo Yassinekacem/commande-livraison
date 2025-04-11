@@ -36,7 +36,8 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClient(@PathVariable int id) {
+    public String deleteClient(@PathVariable int id) {
         clientService.deleteClient(id);
+        return "Client supprimé avec succès";
     }
 }
