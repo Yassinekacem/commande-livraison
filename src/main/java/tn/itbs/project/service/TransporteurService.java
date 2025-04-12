@@ -38,8 +38,8 @@ public class TransporteurService {
     }
 
     public TransporteurDTO update(int id, TransporteurDTO dto) {
-        Transporteur t = transporteurRepository.findById(id).orElse(null);
-        if (t == null) return null;
+        Transporteur t = transporteurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transporteur non trouvé avec l'ID: " + id));
 
         t.setNom(dto.getNom());
         t.setTelephone(dto.getTelephone());
@@ -49,6 +49,9 @@ public class TransporteurService {
     }
 
     public void delete(int id) {
+        if (!transporteurRepository.existsById(id)) {
+            throw new RuntimeException("Transporteur non trouvé avec l'ID: " + id);
+        }
         transporteurRepository.deleteById(id);
     }
 

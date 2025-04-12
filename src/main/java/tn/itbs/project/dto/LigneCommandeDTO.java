@@ -6,7 +6,7 @@ import lombok.Data;
 public class LigneCommandeDTO {
     private int id;
     private int commandeId;
-    private String produit;
+    private int produitId;
     private int quantite;
     private double prixUnitaire;
 }

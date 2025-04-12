@@ -16,7 +16,9 @@ public class LigneCommande {
     private Commande commande;
 
    
-    private String produit; 
+    @ManyToOne
+    @JoinColumn(name = "produit_id", nullable = false)
+    private Produit produit;
 
     private int quantite;
     private double prixUnitaire;
