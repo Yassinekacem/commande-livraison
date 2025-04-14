@@ -1,6 +1,7 @@
 package tn.itbs.project.dto;
 
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class CommandeDTO {
@@ -9,4 +10,6 @@ public class CommandeDTO {
     private String date;
     private String statut;
     private double montantTotal;
+    
+    private List<LigneCommandeDTO> lignes;
 }

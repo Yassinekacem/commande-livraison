@@ -30,10 +30,15 @@ public class CommandeController {
     @PostMapping
     public ResponseEntity<?> createCommande(@RequestBody CommandeDTO dto) {
         try {
+            // Validation simple
+            if (dto.getLignes() == null || dto.getLignes().isEmpty()) {
+                return ResponseEntity.badRequest().body("Au moins une ligne de commande est requise");
+            }
+            
             CommandeDTO createdCommande = commandeService.createCommande(dto);
             return ResponseEntity.ok(createdCommande);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
