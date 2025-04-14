@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.itbs.project.dto.LivraisonDTO;
 import tn.itbs.project.entity.Commande;
+import tn.itbs.project.entity.LigneCommande;
 import tn.itbs.project.entity.Livraison;
+import tn.itbs.project.entity.Produit;
 import tn.itbs.project.entity.Transporteur;
 import tn.itbs.project.repository.CommandeRepository;
 import tn.itbs.project.repository.LivraisonRepository;
@@ -52,8 +54,13 @@ public class LivraisonService {
         livraison.setCout(dto.getCout());
         livraison.setStatut(dto.getStatut());
 
+        // 🚨 Mettre à jour le statut de la commande
+        commande.setStatut("EN_COURS_DE_LIVRAISON");
+        commandeRepository.save(commande);
+
         return convertToDTO(livraisonRepository.save(livraison));
     }
+
 
     public LivraisonDTO update(int id, LivraisonDTO dto) {
         Livraison livraison = livraisonRepository.findById(id)
@@ -71,8 +78,25 @@ public class LivraisonService {
         livraison.setCout(dto.getCout());
         livraison.setStatut(dto.getStatut());
 
-        return convertToDTO(livraisonRepository.save(livraison));
+        // 🚨 Si la livraison est livrée
+        if ("LIVREE".equalsIgnoreCase(dto.getStatut())) {
+            commande.setStatut("REÇUE");
+
+            // 🔄 Mise à jour du stock produit
+            if (commande.getLignesCommande() != null) {
+                for (LigneCommande ligne : commande.getLignesCommande()) {
+                    Produit produit = ligne.getProduit();
+                    int nouvelleQuantite = produit.getStockActuel() - ligne.getQuantite();
+                    produit.setStockActuel(nouvelleQuantite);
+                }
+            }
+        }
+
+        commandeRepository.save(commande); // Sauvegarde commande (statut)
+        return convertToDTO(livraisonRepository.save(livraison)); // Sauvegarde livraison
     }
+
+
 
     public void delete(int id) {
         if (!livraisonRepository.existsById(id)) {
