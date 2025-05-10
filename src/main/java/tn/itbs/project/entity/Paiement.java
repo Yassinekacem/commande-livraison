@@ -16,6 +16,5 @@ public class Paiement {
     private Commande commande;
 
     private String date;
-    private String statut;
     private String mode;  
 }

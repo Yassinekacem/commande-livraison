@@ -7,6 +7,5 @@ public class PaiementDTO {
     private int id;
     private int commandeId;
     private String date;
-    private String statut;
     private String mode;
 }

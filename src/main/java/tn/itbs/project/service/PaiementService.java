@@ -40,7 +40,6 @@ public class PaiementService {
         Paiement paiement = new Paiement();
         paiement.setCommande(commande);
         paiement.setDate(dto.getDate());
-        paiement.setStatut(dto.getStatut());
         paiement.setMode(dto.getMode());
 
         return convertToDTO(paiementRepository.save(paiement));
@@ -55,7 +54,6 @@ public class PaiementService {
 
         paiement.setCommande(commande);
         paiement.setDate(dto.getDate());
-        paiement.setStatut(dto.getStatut());
         paiement.setMode(dto.getMode());
 
         return convertToDTO(paiementRepository.save(paiement));
@@ -73,7 +71,6 @@ public class PaiementService {
         dto.setId(paiement.getId());
         dto.setCommandeId(paiement.getCommande().getId());
         dto.setDate(paiement.getDate());
-        dto.setStatut(paiement.getStatut());
         dto.setMode(paiement.getMode());
         return dto;
     }

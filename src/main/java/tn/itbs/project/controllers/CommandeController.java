@@ -25,7 +25,15 @@ public class CommandeController {
     @GetMapping("/{id}")
     public CommandeDTO getCommandeById(@PathVariable int id) {
         return commandeService.getCommandeById(id);
+    } 
+    
+    
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<CommandeDTO>> getCommandesByClientId(@PathVariable int clientId) {
+        List<CommandeDTO> commandes = commandeService.getCommandesByClientId(clientId);
+        return ResponseEntity.ok(commandes);
     }
+
 
     @PostMapping
     public ResponseEntity<?> createCommande(@RequestBody CommandeDTO dto) {

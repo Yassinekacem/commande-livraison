@@ -134,7 +134,16 @@ public class CommandeService {
         
         // Suppression en cascade grâce à l'annotation dans l'entité
         commandeRepository.deleteById(id);
+    } 
+    
+    
+    public List<CommandeDTO> getCommandesByClientId(int clientId) {
+        return commandeRepository.findByClientId(clientId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
+
 
     private CommandeDTO convertToDTO(Commande commande) {
         CommandeDTO dto = new CommandeDTO();
