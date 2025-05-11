@@ -14,4 +14,10 @@ Ce backend Spring Boot expose une API REST permettant de gérer les commandes, l
 - Création et validation de bons de commande
 - Mise à jour automatique des stocks à la livraison
 - Historique des commandes par client
-- Suivi des livraisons
+- Suivi des livraisons 
+
+
+### 2. Installation
+- Cloner le dépôt :
+```bash
+git clone https://github.com/Yassinekacem/commande_livraison-backend-springBoot.git
