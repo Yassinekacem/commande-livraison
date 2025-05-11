@@ -7,5 +7,7 @@ public class ProduitDTO {
     private int id;
     private String nom;
     private int stockActuel;
-    private String description;
+    private String description; 
+    private int fournisseurId; 
+
 }

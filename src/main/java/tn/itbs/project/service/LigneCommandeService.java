@@ -36,7 +36,19 @@ public class LigneCommandeService {
         return ligneCommandeRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElse(null);
+    } 
+    
+    
+ // LigneCommandeService.java
+
+    public List<LigneCommandeDTO> getLignesCommandesByFournisseur(int fournisseurId) {
+        return ligneCommandeRepository.findLignesByFournisseurId(fournisseurId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
+
+
 
     public LigneCommandeDTO createLigneCommande(LigneCommandeDTO dto) {
         Commande commande = commandeRepository.findById(dto.getCommandeId())
@@ -70,7 +82,7 @@ public class LigneCommandeService {
         ligne.setPrixUnitaire(dto.getPrixUnitaire());
 
         return convertToDTO(ligneCommandeRepository.save(ligne));
-    }
+    } 
 
     public void deleteLigneCommande(int id) {
         if (!ligneCommandeRepository.existsById(id)) {
@@ -78,7 +90,7 @@ public class LigneCommandeService {
         }
         ligneCommandeRepository.deleteById(id);
     }
-
+ 
     private LigneCommandeDTO convertToDTO(LigneCommande ligne) {
         LigneCommandeDTO dto = new LigneCommandeDTO();
         dto.setId(ligne.getId());

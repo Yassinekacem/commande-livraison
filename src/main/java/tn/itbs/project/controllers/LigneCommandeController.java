@@ -25,6 +25,18 @@ public class LigneCommandeController {
     public LigneCommandeDTO getById(@PathVariable int id) {
         return ligneCommandeService.getById(id);
     }
+    
+    
+    @GetMapping("/fournisseur/{fournisseurId}")
+    public ResponseEntity<List<LigneCommandeDTO>> getLignesCommandesByFournisseur(@PathVariable int fournisseurId) {
+        try {
+            List<LigneCommandeDTO> lignes = ligneCommandeService.getLignesCommandesByFournisseur(fournisseurId);
+            return ResponseEntity.ok(lignes);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);  
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody LigneCommandeDTO dto) {

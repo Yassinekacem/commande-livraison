@@ -40,7 +40,11 @@ public class PaiementService {
         Paiement paiement = new Paiement();
         paiement.setCommande(commande);
         paiement.setDate(dto.getDate());
-        paiement.setMode(dto.getMode());
+        paiement.setMode(dto.getMode()); 
+        
+        // Changer le statut de la commande à "Payé"
+        commande.setStatut("Payée");
+        commandeRepository.save(commande); 
 
         return convertToDTO(paiementRepository.save(paiement));
     }

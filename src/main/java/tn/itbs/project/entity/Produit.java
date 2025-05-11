@@ -16,7 +16,11 @@ public class Produit {
 
     private String nom;
     private int stockActuel;
-    private String description;  
+    private String description;   
+    
+    @ManyToOne
+    @JoinColumn(name = "fournisseur_id", nullable = false) 
+    private Fournisseur fournisseur;  
     
     
     @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL , fetch = FetchType.LAZY)

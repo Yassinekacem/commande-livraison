@@ -54,8 +54,7 @@ public class LivraisonService {
         livraison.setCout(dto.getCout());
         livraison.setStatut(dto.getStatut());
 
-        // 🚨 Mettre à jour le statut de la commande
-        commande.setStatut("EN_COURS_DE_LIVRAISON");
+   
         commandeRepository.save(commande);
 
         return convertToDTO(livraisonRepository.save(livraison));
@@ -78,11 +77,9 @@ public class LivraisonService {
         livraison.setCout(dto.getCout());
         livraison.setStatut(dto.getStatut());
 
-        // 🚨 Si la livraison est livrée
         if ("LIVREE".equalsIgnoreCase(dto.getStatut())) {
-            commande.setStatut("REÇUE");
+         
 
-            // 🔄 Mise à jour du stock produit
             if (commande.getLignesCommande() != null) {
                 for (LigneCommande ligne : commande.getLignesCommande()) {
                     Produit produit = ligne.getProduit();
@@ -92,8 +89,8 @@ public class LivraisonService {
             }
         }
 
-        commandeRepository.save(commande); // Sauvegarde commande (statut)
-        return convertToDTO(livraisonRepository.save(livraison)); // Sauvegarde livraison
+        commandeRepository.save(commande); 
+        return convertToDTO(livraisonRepository.save(livraison)); 
     }
 
 
